@@ -1,0 +1,56 @@
+html {
+  scroll-behavior: smooth;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+.nav-bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  z-index: 999;
+}
+
+.nav {
+  width: 100%;
+}
+
+.nav-links {
+  margin-inline: auto;
+  transition: 0.3s;
+  cursor: pointer;
+}
+
+.nav-link {
+  color: #3a7c91;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 3.5rem;
+}
+
+.footer-logo {
+  color: #eee;
+}
+
+.floating-card {
+  background: #003a5780;
+  backdrop-filter: blur(0.3rem);
+}
+
+.cta-btn {
+  transition: all 0.3s;
+}
+
+.cta-btn:hover {
+  scale: 0.95;
+}

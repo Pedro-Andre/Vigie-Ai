@@ -1,0 +1,1542 @@
+<!doctype html>
+<html class="light" lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Vigie.AI - Ferramentas</title>
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../src/css/style.css" />
+
+    <!-- ICON -->
+    <link rel="icon" href="../src/images/logo-white.svg" />
+
+    <!-- FONTS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Saira:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- ICONS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-background": "#191c1e",
+              "secondary-fixed": "#9cf0ff",
+              primary: "#000000",
+              "surface-container-highest": "#e0e3e5",
+              "on-primary-container": "#79849d",
+              "tertiary-fixed": "#d1e4ff",
+              "primary-container": "#101b30",
+              "surface-dim": "#d8dadc",
+              "secondary-fixed-dim": "#00daf3",
+              secondary: "#0af",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "tertiary-fixed-dim": "#afc9ea",
+              "error-container": "#ffdad6",
+              "surface-tint": "#545e76",
+              "secondary-container": "#00e3fd",
+              "on-secondary-container": "#00616d",
+              "on-primary-fixed-variant": "#3c475d",
+              "on-surface-variant": "#ccb",
+              "tertiary-container": "#001d36",
+              "primary-fixed-dim": "#bbc6e2",
+              "on-surface": "#eee",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#101b30",
+              "surface-variant": "#e0e3e5",
+              "surface-container-high": "#e6e8ea",
+              "inverse-primary": "#bbc6e2",
+              "on-error-container": "#93000a",
+              background: "#012",
+              "surface-container": "#eceef0",
+              "on-tertiary-container": "#6d86a5",
+              "surface-container-low": "#f2f4f6",
+              "surface-container-lowest": "#ffffff",
+              error: "#ba1a1a",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#2f4865",
+              "inverse-on-surface": "#eff1f3",
+              "surface-bright": "#f7f9fb",
+              "on-secondary-fixed-variant": "#004f58",
+              "on-secondary-fixed": "#001f24",
+              tertiary: "#000000",
+              outline: "#74777d",
+              surface: "#f7f9fb",
+              "primary-fixed": "#d7e2ff",
+              "outline-variant": "#c4c6cc",
+              "on-tertiary-fixed": "#001d36",
+              "inverse-surface": "#2d3133",
+            },
+            fontFamily: {
+              headline: ["Space Grotesk"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .glass-effect {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .hex-pattern {
+        mask-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill-rule='evenodd'/%3E%3C/svg%3E");
+        mask-size: 80px;
+      }
+
+      /* ── tab navigation ── */
+      .tool-tab {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: 18px 20px;
+        border: 1px solid rgba(0, 170, 255, 0.12);
+        border-radius: 8px;
+        background: rgba(0, 170, 255, 0.03);
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.15s;
+        font-family: "Space Grotesk", sans-serif;
+        text-align: center;
+      }
+      .tool-tab:hover {
+        border-color: rgba(0, 170, 255, 0.35);
+        background: rgba(0, 170, 255, 0.06);
+        transform: translateY(-2px);
+      }
+      .tool-tab.active {
+        border-color: #0af;
+        background: rgba(0, 170, 255, 0.1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(0, 170, 255, 0.12);
+      }
+      .tool-tab .tab-name {
+        font-size: 15px;
+        font-weight: 700;
+        color: #aabbd0;
+        transition: color 0.2s;
+      }
+      .tool-tab.active .tab-name {
+        color: #0af;
+      }
+      .tool-tab .tab-sub {
+        font-size: 14px;
+        color: #4a6a8a;
+        font-family: "Saira", sans-serif;
+      }
+
+      /* ── tool panel ── */
+      .tool-panel {
+        display: none;
+        animation: panelIn 0.35s ease;
+      }
+      .tool-panel.active {
+        display: block;
+      }
+      @keyframes panelIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── feature cards inside tools ── */
+      .feat-card {
+        background: rgba(0, 170, 255, 0.04);
+        border: 1px solid rgba(0, 170, 255, 0.12);
+        border-radius: 8px;
+        padding: 16px;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .feat-card:hover {
+        border-color: rgba(0, 170, 255, 0.3);
+        background: rgba(0, 170, 255, 0.07);
+      }
+
+      /* ── process step ── */
+      .proc-step {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        padding: 16px;
+        border-left: 2px solid rgba(0, 170, 255, 0.15);
+        margin-left: 14px;
+        position: relative;
+        transition: border-color 0.2s;
+      }
+      .proc-step:hover {
+        border-color: rgba(0, 170, 255, 0.5);
+      }
+      .proc-num {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: #101b30;
+        border: 1.5px solid rgba(0, 170, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+        color: #0af;
+        flex-shrink: 0;
+        margin-left: -28px;
+        margin-top: 2px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── compare table ── */
+      .cmp-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: "Saira", sans-serif;
+      }
+      .cmp-table th {
+        padding: 12px 16px;
+        text-align: left;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 13px;
+        font-weight: 700;
+        border-bottom: 1px solid rgba(0, 170, 255, 0.2);
+        color: #0af;
+      }
+      .cmp-table th:first-child {
+        color: #6a8aaa;
+      }
+      .cmp-table td {
+        padding: 11px 16px;
+        font-size: 13px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+        color: #8aa8c8;
+        vertical-align: top;
+      }
+      .cmp-table tr:last-child td {
+        border-bottom: none;
+      }
+      .cmp-table tr:hover td {
+        background: rgba(0, 170, 255, 0.03);
+      }
+      .cmp-table td:first-child {
+        font-weight: 600;
+        color: #ccd8e8;
+        font-family: "Space Grotesk", sans-serif;
+      }
+      .badge-yes {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: #0af;
+        font-weight: 600;
+      }
+      .badge-no {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: #6a8aaa;
+      }
+      .badge-partial {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        color: #f5a623;
+        font-weight: 600;
+      }
+
+      /* ── terminal mockup ── */
+      .terminal {
+        background: #020d1a;
+        border: 1px solid rgba(0, 170, 255, 0.2);
+        border-radius: 8px;
+        overflow: hidden;
+        font-family: "Fira Code", monospace;
+      }
+      .terminal-bar {
+        background: #0a1a2e;
+        padding: 8px 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border-bottom: 1px solid rgba(0, 170, 255, 0.1);
+      }
+      .t-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .terminal-body {
+        padding: 16px;
+        font-size: 12px;
+        line-height: 1.7;
+      }
+      .t-line {
+        display: flex;
+        gap: 8px;
+      }
+      .t-prompt {
+        color: #0af;
+        flex-shrink: 0;
+      }
+      .t-cmd {
+        color: #e0eeff;
+      }
+      .t-out {
+        color: #4a7a9a;
+        padding-left: 0;
+      }
+      .t-green {
+        color: #0f9;
+      }
+      .t-yellow {
+        color: #fa0;
+      }
+      .t-red {
+        color: #f55;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container"
+  >
+    <!-- ── Nav ── -->
+    <nav
+      class="fixed top-0 w-full dark:bg-slate-950/70 backdrop-blur-xl shadow-sm nav-bar"
+    >
+      <div
+        class="max-w-7xl mx-auto px-8 flex justify-between items-center h-20 nav"
+      >
+        <div
+          class="text-2xl font-bold tracking-tighter text-slate-900 dark:text-slate-100 font-['Space_Grotesk'] logo-container"
+        >
+          <a href="../index.html">
+            <img src="../src/images/logo-white.svg" alt="logo" class="logo" />
+          </a>
+        </div>
+        <div class="hidden md:flex items-center gap-10 nav-links">
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="../index.html"
+            >Home</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./ameacas.html"
+            >Ameaças</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./deepfakes.html"
+            >Deepfakes</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./guia.html"
+            >Guia de Proteção</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./ferramentas.html"
+            >Ferramentas</a
+          >
+        </div>
+      </div>
+      <div class="bg-slate-200/20 dark:bg-slate-800/20 h-[1px]"></div>
+    </nav>
+
+    <main class="pt-20 pb-24">
+      <!-- HERO -->
+      <section
+        class="relative min-h-[70vh] flex items-center overflow-hidden hero-content"
+      >
+        <div class="absolute inset-0">
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-background via-primary-container/40 to-background"
+          ></div>
+          <!-- grid decorativo -->
+          <div
+            class="absolute inset-0 opacity-10"
+            style="
+              background-image:
+                linear-gradient(rgba(0, 170, 255, 0.3) 1px, transparent 1px),
+                linear-gradient(
+                  90deg,
+                  rgba(0, 170, 255, 0.3) 1px,
+                  transparent 1px
+                );
+              background-size: 60px 60px;
+            "
+          ></div>
+          <!-- glow central -->
+          <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10"
+            style="
+              background: radial-gradient(circle, #0af 0%, transparent 70%);
+            "
+          ></div>
+        </div>
+
+        <div
+          class="hex-pattern absolute inset-0 opacity-10 pointer-events-none z-[1]"
+        ></div>
+
+        <div class="relative z-10 max-w-7xl mx-auto px-8 w-full">
+          <div class="max-w-3xl space-y-8">
+            <!-- badge -->
+            <div
+              class="inline-flex items-center gap-2 bg-secondary/10 border border-secondary/30 text-secondary text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full font-['Saira']"
+            >
+              <span class="material-symbols-outlined text-sm"
+                >manage_search</span
+              >
+              Ferramentas de Perícia Digital
+            </div>
+
+            <h1
+              class="text-6xl md:text-7xl font-headline font-bold text-on-surface leading-none tracking-tighter"
+            >
+              Como investigadores
+              <span class="text-secondary">rastreiam crimes</span> digitais
+            </h1>
+
+            <p
+              class="text-xl text-on-surface-variant leading-relaxed font-['Saira']"
+            >
+              Conheça as ferramentas que peritos forenses usam para recuperar
+              evidências, preservar dados e solucionar crimes cibernéticos no
+              mundo real.
+            </p>
+
+            <div class="flex flex-wrap gap-4">
+              <button
+                onclick="scrollToTools()"
+                class="bg-gradient-to-r from-secondary to-on-secondary-fixed-variant text-on-secondary px-10 py-4 rounded-md font-headline font-bold text-lg hover:opacity-90 transition-all duration-300 shadow-xl shadow-secondary/20 flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined">arrow_downward</span>
+                Explorar ferramentas
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- O QUE É PERÍCIA DIGITAL -->
+      <section class="max-w-7xl mx-auto px-8 mb-32 mt-10">
+        <div
+          class="bg-primary-container rounded-xl p-8 flex flex-col md:flex-row items-center gap-12"
+        >
+          <div class="flex-1">
+            <h3 class="font-headline text-2xl font-bold mb-2">
+              O que é Perícia Digital?
+            </h3>
+            <p
+              class="text-on-surface-variant mb-6 font-['Saira'] leading-relaxed"
+            >
+              A perícia digital (ou forense computacional) é o processo
+              científico de coleta, preservação, análise e apresentação de
+              evidências digitais. Utilizada em investigações criminais, ela
+              permite que especialistas recuperem dados de dispositivos
+              eletrônicos mantendo a integridade jurídica das provas.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <div class="flex flex-col">
+                <span class="text-4xl font-headline font-bold text-secondary"
+                  >+90%</span
+                >
+                <span
+                  class="text-xs text-outline uppercase font-['Saira'] tracking-wider"
+                  >dos crimes têm evidência digital</span
+                >
+              </div>
+              <div class="w-[2px] bg-outline-variant/30 self-stretch"></div>
+              <div class="flex flex-col">
+                <span class="text-4xl font-headline font-bold">4 etapas</span>
+                <span
+                  class="text-xs text-outline uppercase font-['Saira'] tracking-wider"
+                  >do processo forense</span
+                >
+              </div>
+            </div>
+          </div>
+          <!-- processo forense resumido -->
+          <div class="flex flex-col gap-3 min-w-64">
+            <div
+              class="flex items-center gap-3 bg-secondary/5 border border-secondary/20 rounded-lg px-4 py-3"
+            >
+              <span class="material-symbols-outlined text-secondary text-xl"
+                >search</span
+              >
+              <div>
+                <div class="font-headline font-bold text-sm">1. Coleta</div>
+                <div class="text-xs text-on-surface-variant font-['Saira']">
+                  Aquisição das evidências
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-3 bg-secondary/5 border border-secondary/20 rounded-lg px-4 py-3"
+            >
+              <span class="material-symbols-outlined text-secondary text-xl"
+                >lock</span
+              >
+              <div>
+                <div class="font-headline font-bold text-sm">
+                  2. Preservação
+                </div>
+                <div class="text-xs text-on-surface-variant font-['Saira']">
+                  Integridade via hash
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-3 bg-secondary/5 border border-secondary/20 rounded-lg px-4 py-3"
+            >
+              <span class="material-symbols-outlined text-secondary text-xl"
+                >analytics</span
+              >
+              <div>
+                <div class="font-headline font-bold text-sm">3. Análise</div>
+                <div class="text-xs text-on-surface-variant font-['Saira']">
+                  Extração de evidências
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex items-center gap-3 bg-secondary/5 border border-secondary/20 rounded-lg px-4 py-3"
+            >
+              <span class="material-symbols-outlined text-secondary text-xl"
+                >gavel</span
+              >
+              <div>
+                <div class="font-headline font-bold text-sm">
+                  4. Apresentação
+                </div>
+                <div class="text-xs text-on-surface-variant font-['Saira']">
+                  Laudo para a justiça
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TABS DAS FERRAMENTAS -->
+      <section class="max-w-7xl mx-auto px-8 mb-32" id="tools-section">
+        <div class="mb-12">
+          <h2 class="text-4xl font-headline font-bold mb-4">
+            Ferramentas em <span class="text-secondary">Destaque</span>
+          </h2>
+          <p class="text-on-surface-variant font-['Saira'] max-w-2xl">
+            Selecione uma ferramenta para explorar o que ela é, o que faz e como
+            seria aplicada em um contexto educacional de segurança digital.
+          </p>
+        </div>
+
+        <!-- Tab buttons -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-10">
+          <button
+            class="tool-tab active"
+            id="tab-autopsy"
+            onclick="switchTool('autopsy')"
+          >
+            <span class="material-symbols-outlined text-secondary text-3xl"
+              >policy</span
+            >
+            <span class="tab-name">Autopsy</span>
+            <span class="tab-sub"
+              >Plataforma de análise forense open source</span
+            >
+          </button>
+          <button class="tool-tab" id="tab-ftk" onclick="switchTool('ftk')">
+            <span class="material-symbols-outlined text-secondary text-3xl"
+              >save</span
+            >
+            <span class="tab-name">FTK Imager</span>
+            <span class="tab-sub">Aquisição e criação de imagens forenses</span>
+          </button>
+        </div>
+
+        <!--  PAINEL: AUTOPSY -->
+        <div class="tool-panel active" id="panel-autopsy">
+          <!-- intro -->
+          <div class="floating-card rounded-2xl p-8 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+              <div class="lg:col-span-7">
+                <div class="flex items-center gap-3 mb-6">
+                  <div
+                    class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0"
+                  >
+                    <span
+                      class="material-symbols-outlined text-secondary text-2xl"
+                      >policy</span
+                    >
+                  </div>
+                  <div>
+                    <h3 class="font-headline text-3xl font-bold">Autopsy</h3>
+                    <p class="text-sm text-on-surface-variant font-['Saira']">
+                      Baseado no framework The Sleuth Kit · Open Source ·
+                      Multiplataforma
+                    </p>
+                  </div>
+                </div>
+                <p
+                  class="text-on-surface-variant font-['Saira'] leading-relaxed mb-6 text-justify"
+                >
+                  O <strong class="text-on-surface">Autopsy</strong> é uma
+                  plataforma de análise forense digital de código aberto,
+                  amplamente utilizada por peritos e investigadores para
+                  examinar dados armazenados em dispositivos eletrônicos. Sua
+                  interface gráfica facilita a análise de evidências digitais,
+                  tornando-o acessível tanto em ambientes profissionais quanto
+                  acadêmicos.
+                </p>
+                <!-- tags -->
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >Open Source</span
+                  >
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >Gratuito</span
+                  >
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >Windows / Linux / macOS</span
+                  >
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >The Sleuth Kit</span
+                  >
+                </div>
+              </div>
+              <!-- info lateral -->
+              <div class="lg:col-span-5 flex flex-col gap-4">
+                <div
+                  class="floating-card p-5 rounded-xl border-l-4 border-secondary"
+                >
+                  <h4 class="font-headline font-bold mb-2 text-on-surface">
+                    Pro-Tip
+                  </h4>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    O Autopsy é usado por forças policiais como o FBI e a
+                    Polícia Federal Brasileira. Sua versão gratuita oferece
+                    praticamente as mesmas funcionalidades das soluções
+                    comerciais.
+                  </p>
+                </div>
+                <div
+                  class="floating-card rounded-xl p-5 flex items-start gap-3"
+                >
+                  <span
+                    class="material-symbols-outlined text-secondary flex-shrink-0 mt-0.5"
+                    >school</span
+                  >
+                  <div>
+                    <p class="font-headline font-bold mb-2 text-on-surface">
+                      Por que estudar?
+                    </p>
+                    <p
+                      class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                    >
+                      É a ferramenta de referência no ensino de forense digital
+                      em universidades ao redor do mundo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- o que faz — funcionalidades -->
+          <div class="mb-8">
+            <h4 class="font-headline text-2xl font-bold mb-6">
+              O que a ferramenta <span class="text-secondary">faz</span>
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >find_in_page</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Recuperação de arquivos
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Recupera arquivos apagados de discos rígidos, pen drives e
+                  imagens forenses, mesmo após formatação.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >history</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Histórico de atividades
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Identifica atividades do usuário: histórico de navegação,
+                  e-mails acessados, downloads e programas executados.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >category</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Categorização automática
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Organiza automaticamente os dados coletados, destacando
+                  possíveis evidências como imagens suspeitas e padrões de
+                  comportamento.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >manage_search</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Busca por palavras-chave
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Indexa e permite buscas por palavras-chave em grandes volumes
+                  de dados, facilitando a localização de conteúdo específico.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >timeline</span
+                >
+                <h5 class="font-headline font-bold mb-2">Linha do tempo</h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Gera uma linha do tempo das atividades no dispositivo,
+                  ajudando a reconstruir eventos em ordem cronológica.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >extension</span
+                >
+                <h5 class="font-headline font-bold mb-2">Módulos e plugins</h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Suporta módulos adicionais para análise de geolocalização,
+                  comunicadores, redes sociais e muito mais.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- como seria aplicado -->
+          <div class="floating-card rounded-2xl p-8 mb-8">
+            <h4 class="font-headline text-2xl font-bold mb-8">
+              Como seria <span class="text-secondary">aplicado no projeto</span>
+            </h4>
+            <div class="flex flex-col gap-0">
+              <div class="proc-step">
+                <div class="proc-num">1</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Apresentação como exemplo prático
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    O Autopsy seria mostrado como um exemplo real de ferramenta
+                    utilizada por peritos digitais, contextualizando o processo
+                    de investigação forense de forma concreta e acessível.
+                  </p>
+                </div>
+              </div>
+              <div class="proc-step">
+                <div class="proc-num">2</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Demonstrações teóricas e simulações
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    Demonstrações explicando como peritos utilizam o software
+                    para recuperar dados e analisar evidências em casos reais de
+                    crimes cibernéticos, como invasão de contas e fraudes.
+                  </p>
+                </div>
+              </div>
+              <div class="proc-step">
+                <div class="proc-num">3</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Base para conteúdo educativo
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    Serve como base para mostrar de forma didática como funciona
+                    o processo de investigação forense, contribuindo para a
+                    conscientização dos usuários sobre segurança digital.
+                  </p>
+                </div>
+              </div>
+              <div class="proc-step">
+                <div class="proc-num">4</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Conexão com os riscos do ambiente online
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    Ilustra que rastros digitais são sempre deixados, mesmo
+                    quando o usuário acredita ter apagado tudo — reforçando a
+                    mensagem de que crimes digitais podem e são investigados.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- terminal mockup educativo -->
+          <div class="terminal mb-2">
+            <div class="terminal-bar">
+              <div class="t-dot" style="background: #ff5f57"></div>
+              <div class="t-dot" style="background: #febc2e"></div>
+              <div class="t-dot" style="background: #28c840"></div>
+              <span class="ml-3 text-s text-on-surface-variant font-['Saira']"
+                >Autopsy — Simulação de Análise Forense</span
+              >
+            </div>
+            <div class="terminal-body">
+              <div class="t-line">
+                <span class="t-prompt text-s">[autopsy]$</span
+                ><span class="t-cmd ml-2 text-sm"
+                  >Iniciando análise do caso #2024-0871...</span
+                >
+              </div>
+              <div class="t-line mt-1 text-sm">
+                <span class="t-out"
+                  >→ Dispositivo: SSD 512GB · Imagem forense verificada</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→ Hash MD5:
+                  <span class="t-green">a3f2c1d9e8b7a6f5 ✓ Íntegro</span></span
+                >
+              </div>
+              <div class="t-line mt-2 text-sm">
+                <span class="t-prompt">[autopsy]$</span
+                ><span class="t-cmd ml-2"
+                  >Módulo: Recuperação de arquivos deletados</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→ <span class="t-yellow">847 arquivos recuperados</span> da
+                  pasta /Downloads (apagados em 12/03/2024)</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→
+                  <span class="t-red">23 arquivos marcados como suspeitos</span>
+                  · Categoria: Documentos financeiros</span
+                >
+              </div>
+              <div class="t-line mt-2 text-sm">
+                <span class="t-prompt">[autopsy]$</span
+                ><span class="t-cmd ml-2">Módulo: Histórico de navegação</span>
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→ 3 acessos ao site fraudulento detectado na base de
+                  dados</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→ Último acesso:
+                  <span class="t-yellow">11/03/2024 às 23:47</span></span
+                >
+              </div>
+              <div class="t-line mt-2 text-sm">
+                <span class="t-green"
+                  >✓ Relatório gerado: caso_2024-0871_relatorio.pdf</span
+                >
+              </div>
+            </div>
+          </div>
+          <p class="text-lg text-on-surface-variant font-['Saira'] mb-2">
+            * Simulação ilustrativa do fluxo de análise — não representa output
+            real do software.
+          </p>
+        </div>
+
+        <!--  PAINEL: FTK IMAGER  -->
+        <div class="tool-panel" id="panel-ftk">
+          <!-- intro -->
+          <div class="floating-card rounded-2xl p-8 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+              <div class="lg:col-span-7">
+                <div class="flex items-center gap-3 mb-6">
+                  <div
+                    class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0"
+                  >
+                    <span
+                      class="material-symbols-outlined text-secondary text-2xl"
+                      >save</span
+                    >
+                  </div>
+                  <div>
+                    <h3 class="font-headline text-3xl font-bold">FTK Imager</h3>
+                    <p class="text-sm text-on-surface-variant font-['Saira']">
+                      Desenvolvido pela Exterro (ex-AccessData) · Gratuito ·
+                      Windows
+                    </p>
+                  </div>
+                </div>
+                <p
+                  class="text-on-surface-variant font-['Saira'] leading-relaxed mb-6 text-justify"
+                >
+                  O <strong class="text-on-surface">FTK Imager</strong> é um
+                  software forense desenvolvido pela Exterro, focado
+                  principalmente na criação de imagens forenses — cópias exatas
+                  de dispositivos de armazenamento. É uma ferramenta leve,
+                  gratuita e bastante acessível, frequentemente usada como o
+                  <em>primeiro passo</em> em uma investigação digital antes do
+                  uso de ferramentas mais completas.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >Gratuito</span
+                  >
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >Windows</span
+                  >
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >Exterro / AccessData</span
+                  >
+                  <span
+                    class="bg-secondary/10 border border-secondary/25 text-secondary text-xs font-bold px-3 py-1 rounded-full font-['Saira']"
+                    >Leve e rápido</span
+                  >
+                </div>
+              </div>
+              <div class="lg:col-span-5 flex flex-col gap-4">
+                <div
+                  class="floating-card p-5 rounded-xl border-l-4 border-secondary"
+                >
+                  <h4 class="font-headline font-bold mb-2 text-on-surface">
+                    Por que preservar antes de analisar?
+                  </h4>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    Em qualquer investigação forense, a regra de ouro é nunca
+                    analisar o dispositivo original. O FTK Imager cria uma cópia
+                    exata, permitindo que o original seja preservado como
+                    evidência jurídica intocada.
+                  </p>
+                </div>
+                <div
+                  class="floating-card rounded-xl p-5 flex items-start gap-3"
+                >
+                  <span
+                    class="material-symbols-outlined text-secondary flex-shrink-0 mt-0.5"
+                    >verified</span
+                  >
+                  <div>
+                    <p class="font-headline font-bold text-sm mb-1">
+                      Validade jurídica
+                    </p>
+                    <p
+                      class="text-xs text-on-surface-variant font-['Saira'] leading-relaxed"
+                    >
+                      As imagens geradas pelo FTK Imager são aceitas como
+                      evidência em processos judiciais por garantirem a
+                      integridade dos dados via hash MD5/SHA.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- funcionalidades -->
+          <div class="mb-8">
+            <h4 class="font-headline text-2xl font-bold mb-6">
+              O que a ferramenta <span class="text-secondary">faz</span>
+            </h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >content_copy</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Criação de imagens forenses
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Captura cópias bit a bit de discos rígidos, pen drives e
+                  outros dispositivos, preservando cada byte do original.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >fingerprint</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Verificação por hash
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Garante a autenticidade das evidências usando algoritmos MD5 e
+                  SHA-1/SHA-256, comprovando que os dados não foram alterados.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >folder_open</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Visualização sem alteração
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Permite navegar por arquivos e pastas dentro das imagens sem
+                  modificá-las, mantendo a validade jurídica das informações.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >restore_from_trash</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Recuperação de deletados
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Recupera arquivos que foram deletados do dispositivo, mas
+                  ainda não foram sobrescritos no sistema de arquivos.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >data_object</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Análise de metadados
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Extrai metadados de arquivos como data de criação,
+                  modificação, autor e localização GPS em fotos.
+                </p>
+              </div>
+              <div class="feat-card">
+                <span
+                  class="material-symbols-outlined text-secondary mb-3 text-2xl"
+                  >output</span
+                >
+                <h5 class="font-headline font-bold mb-2">
+                  Exportação para análise
+                </h5>
+                <p
+                  class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Exporta dados relevantes em formatos compatíveis com
+                  ferramentas de análise mais completas, como o FTK completo e o
+                  Autopsy.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- como seria aplicado -->
+          <div class="floating-card rounded-2xl p-8 mb-8">
+            <h4 class="font-headline text-2xl font-bold mb-8">
+              Como seria <span class="text-secondary">aplicado no projeto</span>
+            </h4>
+            <div class="flex flex-col gap-0">
+              <div class="proc-step">
+                <div class="proc-num">1</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Ferramenta introdutória ao processo forense
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    O FTK Imager seria apresentado como a porta de entrada ao
+                    processo de investigação forense, mostrando a etapa mais
+                    crítica: a coleta segura de evidências antes de qualquer
+                    análise.
+                  </p>
+                </div>
+              </div>
+              <div class="proc-step">
+                <div class="proc-num">2</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Demonstração da coleta segura
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    Exemplo prático de como é feita a coleta de evidências
+                    digitais de forma segura, sem comprometer a integridade dos
+                    dados originais — conceito fundamental em qualquer
+                    investigação.
+                  </p>
+                </div>
+              </div>
+              <div class="proc-step">
+                <div class="proc-num">3</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Explicações passo a passo
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    Em ambiente educacional, pode ser explorado por meio de
+                    simulações ou explicações passo a passo, mostrando o fluxo
+                    completo da criação de uma imagem forense.
+                  </p>
+                </div>
+              </div>
+              <div class="proc-step">
+                <div class="proc-num">4</div>
+                <div>
+                  <h5 class="font-headline font-bold mb-1">
+                    Conceito de cadeia de custódia
+                  </h5>
+                  <p
+                    class="text-sm text-on-surface-variant font-['Saira'] leading-relaxed"
+                  >
+                    Ajuda os usuários a compreenderem a importância da
+                    preservação das evidências e o início do processo pericial,
+                    incluindo o conceito de cadeia de custódia em crimes
+                    digitais.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- terminal mockup -->
+          <div class="terminal mb-2">
+            <div class="terminal-bar">
+              <div class="t-dot" style="background: #ff5f57"></div>
+              <div class="t-dot" style="background: #febc2e"></div>
+              <div class="t-dot" style="background: #28c840"></div>
+              <span class="ml-3 text-xs text-on-surface-variant font-['Saira']"
+                >FTK Imager — Simulação de Criação de Imagem Forense</span
+              >
+            </div>
+            <div class="terminal-body">
+              <div class="t-line text-sm">
+                <span class="t-prompt">[ftk]$</span
+                ><span class="t-cmd ml-2"
+                  >Iniciando captura de imagem forense...</span
+                >
+              </div>
+              <div class="t-line mt-1 text-sm">
+                <span class="t-out"
+                  >→ Origem: Disco USB — Kingston 64GB (Suspeito)</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→ Destino: /evidencias/caso_0871/usb_suspeito.E01</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out">→ Formato: EnCase E01 (comprimido)</span>
+              </div>
+              <div class="t-line mt-2 text-sm">
+                <span class="t-prompt">[ftk]$</span
+                ><span class="t-cmd ml-2"
+                  >Calculando hash pré-aquisição...</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→ MD5:
+                  <span class="t-yellow"
+                    >f3a2b1c9d8e7f6a5b4c3d2e1f0a9b8c7</span
+                  ></span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-out"
+                  >→ SHA1:
+                  <span class="t-yellow"
+                    >1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b</span
+                  ></span
+                >
+              </div>
+              <div class="t-line mt-2 text-sm">
+                <span class="t-prompt">[ftk]$</span
+                ><span class="t-cmd ml-2"
+                  >Copiando setor por setor... [████████████████████] 100%</span
+                >
+              </div>
+              <div class="t-line mt-1 text-sm">
+                <span class="t-out"
+                  >→ Verificando integridade pós-aquisição...</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-green"
+                  >✓ Hash verificado: correspondência exata confirmada</span
+                >
+              </div>
+              <div class="t-line text-sm">
+                <span class="t-green"
+                  >✓ Imagem forense criada com sucesso — evidência
+                  preservada</span
+                >
+              </div>
+            </div>
+          </div>
+          <p class="text-lg text-on-surface-variant font-['Saira'] mb-2">
+            * Simulação ilustrativa do fluxo de aquisição — não representa
+            output real do software.
+          </p>
+        </div>
+      </section>
+
+      <!-- COMPARATIVO -->
+      <section class="max-w-7xl mx-auto px-8 mb-32">
+        <div class="mb-10">
+          <h2 class="text-4xl font-headline font-bold mb-4">
+            Comparativo das <span class="text-secondary">Ferramentas</span>
+          </h2>
+          <p class="text-on-surface-variant font-['Saira']">
+            Entenda as diferenças e quando usar cada uma.
+          </p>
+        </div>
+
+        <div class="floating-card rounded-2xl overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="cmp-table">
+              <thead>
+                <tr>
+                  <th>Critério</th>
+                  <th>Autopsy</th>
+                  <th>FTK Imager</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Foco principal</td>
+                  <td>Análise forense completa</td>
+                  <td>Aquisição e criação de imagens</td>
+                </tr>
+                <tr>
+                  <td>Custo</td>
+                  <td>
+                    <span class="badge-yes">✓ Gratuito (open source)</span>
+                  </td>
+                  <td><span class="badge-yes">✓ Gratuito</span></td>
+                </tr>
+                <tr>
+                  <td>Sistema operacional</td>
+                  <td>Windows, Linux, macOS</td>
+                  <td>Windows</td>
+                </tr>
+                <tr>
+                  <td>Interface gráfica</td>
+                  <td><span class="badge-yes">✓ Sim (completa)</span></td>
+                  <td><span class="badge-yes">✓ Sim (simples)</span></td>
+                </tr>
+                <tr>
+                  <td>Recuperação de arquivos</td>
+                  <td><span class="badge-yes">✓ Avançada</span></td>
+                  <td><span class="badge-partial">⚡ Básica</span></td>
+                </tr>
+                <tr>
+                  <td>Criação de imagens forenses</td>
+                  <td><span class="badge-partial">⚡ Limitada</span></td>
+                  <td><span class="badge-yes">✓ Especializada</span></td>
+                </tr>
+                <tr>
+                  <td>Verificação por hash</td>
+                  <td><span class="badge-yes">✓ MD5, SHA</span></td>
+                  <td><span class="badge-yes">✓ MD5, SHA-1, SHA-256</span></td>
+                </tr>
+                <tr>
+                  <td>Análise de histórico e e-mails</td>
+                  <td><span class="badge-yes">✓ Avançada</span></td>
+                  <td><span class="badge-no">— Não</span></td>
+                </tr>
+                <tr>
+                  <td>Plugins e extensões</td>
+                  <td><span class="badge-yes">✓ Grande ecossistema</span></td>
+                  <td><span class="badge-no">— Não</span></td>
+                </tr>
+                <tr>
+                  <td>Indicado para iniciantes</td>
+                  <td><span class="badge-yes">✓ Sim</span></td>
+                  <td><span class="badge-yes">✓ Sim (mais simples)</span></td>
+                </tr>
+                <tr>
+                  <td>Etapa do processo forense</td>
+                  <td>Análise e relatório</td>
+                  <td>Coleta e preservação</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- dica de uso conjunto -->
+        <div
+          class="mt-6 bg-primary-container rounded-xl p-5 flex items-start gap-4 border-l-4 border-secondary"
+        >
+          <span
+            class="material-symbols-outlined text-secondary flex-shrink-0 mt-0.5"
+            >tips_and_updates</span
+          >
+          <div>
+            <p class="font-headline font-bold text-on-surface mb-1 text-lg">
+              Uso em conjunto — o fluxo ideal
+            </p>
+            <p
+              class="text-s text-on-surface-variant font-['Saira'] leading-relaxed"
+            >
+              Na prática, as duas ferramentas se complementam: o
+              <strong class="text-on-surface">FTK Imager</strong> é usado
+              primeiro para criar uma imagem forense segura do dispositivo, e o
+              <strong class="text-on-surface">Autopsy</strong> é então aplicado
+              sobre essa imagem para a análise detalhada das evidências — sem
+              nunca tocar no dispositivo original.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="max-w-7xl mx-auto px-8">
+        <div
+          class="floating-card rounded-2xl p-12 text-center relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 opacity-5"
+            style="
+              background-image:
+                linear-gradient(rgba(0, 170, 255, 0.5) 1px, transparent 1px),
+                linear-gradient(
+                  90deg,
+                  rgba(0, 170, 255, 0.5) 1px,
+                  transparent 1px
+                );
+              background-size: 40px 40px;
+            "
+          ></div>
+          <div class="relative z-10">
+            <h2 class="text-3xl md:text-5xl font-headline font-bold mb-6">
+              Quer saber como se proteger?
+            </h2>
+            <p
+              class="text-lg mb-10 max-w-2xl mx-auto font-['Saira'] text-on-surface-variant"
+            >
+              Conheça as ameaças mais comuns e aprenda as melhores práticas para
+              manter sua segurança digital.
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+              <a
+                href="./ameacas.html"
+                class="bg-gradient-to-r from-secondary to-on-secondary-fixed-variant text-on-secondary px-10 py-4 rounded-md font-headline font-bold text-lg hover:opacity-90 transition-all duration-300 shadow-xl shadow-secondary/20 inline-flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined">security</span>
+                Ver ameaças
+              </a>
+              <a
+                href="./guia.html"
+                class="border border-secondary/40 text-secondary px-10 py-4 rounded-md font-headline font-bold text-lg hover:bg-secondary/10 transition-all duration-300 inline-flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined">menu_book</span>
+                Guia de proteção
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer
+      class="dark:bg-slate-900 w-full py-12 border-t border-slate-200/50 dark:border-slate-800/50 mt-auto"
+    >
+      <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="fade-in duration-500">
+          <div class="text-lg font-bold footer-logo font-['Saira'] mb-4">
+            Vigie.Ai
+          </div>
+          <p
+            class="text-sm leading-relaxed text-slate-500 max-w-sm font-['Saira']"
+          >
+            Plataforma dedicada à educação cibernética e proteção de dados para
+            cidadãos digitais.
+          </p>
+          <p class="text-sm text-slate-500 font-['Saira'] mt-2">
+            © 2026 Vigie.Ai. Protegendo o futuro digital.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-8">
+          <div class="flex flex-col gap-3">
+            <span
+              class="font-bold text-secondary mb-2 font-['Saira'] text-sm uppercase tracking-wider"
+              >Educação</span
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="../index.html"
+              >Home</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./ameacas.html"
+              >Ameaças</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./deepfakes.html"
+              >Deepfakes</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./guia.html"
+              >Guia de Proteção</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./ferramentas.html"
+              >Ferramentas</a
+            >
+          </div>
+          <div class="flex flex-col gap-3">
+            <span
+              class="font-bold text-secondary mb-2 font-['Saira'] text-sm uppercase tracking-wider"
+              >Institucional</span
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Sobre Nós</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Privacidade</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Termos</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Contato</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      function scrollToTools() {
+        document
+          .getElementById("tools-section")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+
+      function switchTool(tool) {
+        // tabs
+        document
+          .querySelectorAll(".tool-tab")
+          .forEach((t) => t.classList.remove("active"));
+        document.getElementById("tab-" + tool).classList.add("active");
+        // panels
+        document
+          .querySelectorAll(".tool-panel")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById("panel-" + tool).classList.add("active");
+      }
+    </script>
+  </body>
+</html>

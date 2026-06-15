@@ -1,0 +1,846 @@
+<!doctype html>
+<html class="light" lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Vigie.AI — Deepfakes</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link rel="stylesheet" href="../src/css/style.css" />
+    <link rel="icon" href="../src/images/logo-white.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Saira:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-background": "#191c1e",
+              "secondary-fixed": "#9cf0ff",
+              primary: "#000000",
+              "surface-container-highest": "#e0e3e5",
+              "on-primary-container": "#79849d",
+              "tertiary-fixed": "#d1e4ff",
+              "primary-container": "#101b30",
+              "surface-dim": "#d8dadc",
+              "secondary-fixed-dim": "#00daf3",
+              secondary: "#0af",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "tertiary-fixed-dim": "#afc9ea",
+              "error-container": "#ffdad6",
+              "surface-tint": "#545e76",
+              "secondary-container": "#00e3fd",
+              "on-secondary-container": "#00616d",
+              "on-primary-fixed-variant": "#3c475d",
+              "on-surface-variant": "#ccb",
+              "tertiary-container": "#001d36",
+              "primary-fixed-dim": "#bbc6e2",
+              "on-surface": "#eee",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#101b30",
+              "surface-variant": "#e0e3e5",
+              "surface-container-high": "#e6e8ea",
+              "inverse-primary": "#bbc6e2",
+              "on-error-container": "#93000a",
+              background: "#012",
+              "surface-container": "#eceef0",
+              "on-tertiary-container": "#6d86a5",
+              "surface-container-low": "#f2f4f6",
+              "surface-container-lowest": "#ffffff",
+              error: "#ba1a1a",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#2f4865",
+              "inverse-on-surface": "#eff1f3",
+              "surface-bright": "#f7f9fb",
+              "on-secondary-fixed-variant": "#004f58",
+              "on-secondary-fixed": "#001f24",
+              tertiary: "#000000",
+              outline: "#74777d",
+              surface: "#f7f9fb",
+              "primary-fixed": "#d7e2ff",
+              "outline-variant": "#c4c6cc",
+              "on-tertiary-fixed": "#001d36",
+              "inverse-surface": "#2d3133",
+            },
+            fontFamily: {
+              headline: ["Space Grotesk"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .glass-effect {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .hex-pattern {
+        mask-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill-rule='evenodd'/%3E%3C/svg%3E");
+        mask-size: 80px;
+      }
+
+      /* ── identify icon circles — dark theme ── */
+      .id-icon {
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: rgba(0, 170, 255, 0.08);
+        border: 1px solid rgba(0, 170, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .group:hover .id-icon {
+        background: rgba(0, 170, 255, 0.15);
+        border-color: rgba(0, 170, 255, 0.45);
+      }
+
+      /* ── shield tip cards ── */
+      .shield-card {
+        background: rgba(16, 27, 48, 0.85);
+        border: 1px solid rgba(0, 170, 255, 0.15);
+        border-radius: 10px;
+        padding: 20px 22px;
+        transition:
+          border-color 0.2s,
+          box-shadow 0.2s,
+          transform 0.2s;
+      }
+      .shield-card:hover {
+        border-color: rgba(0, 170, 255, 0.4);
+        box-shadow: 0 6px 24px rgba(0, 170, 255, 0.08);
+        transform: translateX(4px);
+      }
+
+      /* ── stat ring ── */
+      .stat-ring {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        flex-shrink: 0;
+      }
+
+      .stat-ring svg {
+        transform: rotate(-90deg);
+        width: 300px;
+        height: 300px;
+      }
+
+      .stat-ring .ring-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .stat-ring .ring-bg {
+        stroke: rgba(0, 170, 255, 0.1);
+      }
+
+      .stat-ring .ring-fill {
+        stroke: #0af;
+        stroke-dasharray: 565;
+        stroke-dashoffset: 11; /* 98% filled = 2% empty = 565*0.02 ≈ 11 */
+        stroke-linecap: round;
+        filter: drop-shadow(0 0 6px rgba(0, 170, 255, 0.6));
+      }
+
+      /* ── stat row cards ── */
+      .stat-mini {
+        background: rgba(16, 27, 48, 0.85);
+        border: 1px solid rgba(0, 170, 255, 0.12);
+        border-radius: 8px;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container"
+  >
+    <!-- ── Nav ── -->
+    <nav
+      class="fixed top-0 w-full dark:bg-slate-950/70 backdrop-blur-xl shadow-sm nav-bar"
+    >
+      <div
+        class="max-w-7xl mx-auto px-8 flex justify-between items-center h-20 nav"
+      >
+        <div
+          class="text-2xl font-bold tracking-tighter font-['Space_Grotesk'] logo-container"
+        >
+          <a href="../index.html">
+            <img src="../src/images/logo-white.svg" alt="logo" class="logo" />
+          </a>
+        </div>
+        <div class="hidden md:flex items-center gap-10 nav-links">
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="../index.html"
+            >Home</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./ameacas.html"
+            >Ameaças</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./deepfakes.html"
+            >Deepfakes</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./guia.html"
+            >Guia de Proteção</a
+          >
+          <a
+            class="text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./ferramentas.html"
+            >Ferramentas</a
+          >
+        </div>
+      </div>
+      <div class="bg-slate-200/20 dark:bg-slate-800/20 h-[1px]"></div>
+    </nav>
+
+    <main class="pt-20">
+      <!-- ══════════════════════
+           HERO — original mantido
+      ══════════════════════ -->
+      <section
+        class="relative min-h-[90vh] flex items-center overflow-hidden hero-content"
+      >
+        <div class="absolute inset-0">
+          <img
+            src="../src/images/deepfake-hero.png"
+            alt="IA Concept"
+            class="w-full h-full object-cover"
+          />
+          <div class="absolute inset-0"></div>
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-tertiary via-background/30 to-transparent"
+          ></div>
+        </div>
+        <div
+          class="absolute inset-0 hex-pattern opacity-10 pointer-events-none z-[1]"
+        ></div>
+        <div class="relative z-10 max-w-7xl mx-auto px-8 w-full">
+          <div class="max-w-3xl space-y-8">
+            <h1
+              class="text-6xl md:text-7xl font-headline font-bold text-on-surface leading-none tracking-tighter"
+            >
+              A Realidade sob
+              <span class="text-secondary">Escrutínio</span>
+            </h1>
+            <p
+              class="text-xl text-on-surface-variant leading-relaxed text-justify font-['Saira']"
+            >
+              Deepfakes não são apenas vídeos falsos. São a fronteira final da
+              desinformação, onde a Inteligência Artificial desafia nossa
+              percepção do que é real.
+            </p>
+            <div class="flex gap-4">
+              <a
+                class="bg-gradient-to-r from-secondary to-on-secondary-fixed-variant text-on-secondary px-10 py-4 rounded-md font-headline font-bold text-lg hover:opacity-90 transition-all duration-300 shadow-xl shadow-secondary/20 flex items-center gap-2"
+                href="#deep"
+              >
+                Ver exemplos
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════
+           DEFINIÇÃO — bento grid (original mantido, apenas ajustes menores)
+      ══════════════════════ -->
+      <section class="py-24 bg-background" id="deep">
+        <div class="max-w-7xl mx-auto px-8">
+          <div
+            class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
+          >
+            <div class="max-w-2xl">
+              <h2 class="text-4xl font-headline font-bold mb-4">
+                O que são Deepfakes?
+              </h2>
+              <p class="text-on-surface-variant text-lg font-['Saira']">
+                A tecnologia utiliza Redes Adversárias Generativas (GANs) para
+                sobrepor rostos e clonar vozes com precisão assustadora.
+              </p>
+            </div>
+            <div class="h-1 w-32 bg-secondary rounded-full flex-shrink-0"></div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div
+              class="md:col-span-2 floating-card p-10 rounded-xl relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 -mr-16 -mt-16 rounded-full blur-3xl"
+              ></div>
+              <span
+                class="material-symbols-outlined text-secondary mb-6 text-4xl"
+                >psychology</span
+              >
+              <h3 class="text-2xl font-headline font-bold mb-4">
+                Manipulação Estratégica
+              </h3>
+              <p class="text-on-surface-variant leading-relaxed font-['Saira']">
+                Diferente de edições comuns, a IA "aprende" as nuances de um
+                indivíduo — microexpressões, tiques verbais e tons de voz —
+                tornando a mentira orgânica e convincente para o olho humano
+                destreinado.
+              </p>
+            </div>
+            <!-- Card 2 -->
+            <div
+              class="floating-card p-10 rounded-xl flex flex-col justify-between"
+            >
+              <span class="material-symbols-outlined text-secondary text-4xl"
+                >warning</span
+              >
+              <div>
+                <h3 class="text-2xl font-headline font-bold mb-2">
+                  Desinformação em Escala
+                </h3>
+                <p
+                  class="text-on-surface-variant leading-relaxed font-['Saira']"
+                >
+                  A democratização de ferramentas de IA permite que conteúdos
+                  falsos sejam gerados em segundos, saturando as redes sociais.
+                </p>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="floating-card p-10 rounded-xl">
+              <span
+                class="material-symbols-outlined text-secondary mb-6 text-4xl"
+                >record_voice_over</span
+              >
+              <h3 class="text-xl font-headline font-bold mb-4">
+                Deepfakes de Áudio
+              </h3>
+              <p class="text-on-surface-variant leading-relaxed font-['Saira']">
+                Clone vocal usado em golpes de engenharia social, simulando
+                familiares ou executivos em situações de emergência.
+              </p>
+            </div>
+            <!-- Card 4 -->
+            <div
+              class="md:col-span-2 floating-card p-10 rounded-xl border-l-4 border-secondary"
+            >
+              <div class="flex flex-col md:flex-row gap-8 items-center">
+                <div class="flex-1">
+                  <h3 class="text-xl font-headline font-bold mb-4">
+                    O Risco Político e Social
+                  </h3>
+                  <p
+                    class="text-on-surface-variant leading-relaxed font-['Saira'] mb-4"
+                  >
+                    Vídeos forjados podem influenciar eleições, destruir
+                    reputações e causar pânico financeiro antes mesmo de serem
+                    desmentidos.
+                  </p>
+                  <a
+                    class="text-secondary font-bold flex items-center gap-2 group"
+                    href="#"
+                  >
+                    Ler estudo de caso
+                    <span
+                      class="material-symbols-outlined group-hover:translate-x-1 transition-transform"
+                      >arrow_forward</span
+                    >
+                  </a>
+                </div>
+                <img
+                  alt="Tech Security"
+                  class="w-48 h-48 rounded-full object-cover"
+                  src="../src/images/security.png"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════
+           COMO IDENTIFICAR — fundo bg-background (corrigido)
+      ══════════════════════ -->
+      <section class="py-24 bg-background">
+        <div class="max-w-7xl mx-auto px-8">
+          <div class="text-center mb-20">
+            <span
+              class="text-xs uppercase tracking-[0.2em] text-secondary font-semibold font-['Saira'] mb-3 block"
+              >Guia de Detecção</span
+            >
+            <h2 class="text-5xl font-headline font-bold mb-6">
+              Como Identificar
+            </h2>
+            <p class="text-on-surface-variant max-w-2xl mx-auto font-['Saira']">
+              A perfeição da IA ainda deixa rastros. Aprenda a observar as
+              falhas nas costuras digitais.
+            </p>
+            <div class="w-20 h-1 bg-secondary rounded-full mx-auto mt-6"></div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+            <!-- imagem com overlays -->
+            <div class="relative">
+              <div
+                class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl"
+                style="border: 1px solid rgba(0, 170, 255, 0.15)"
+              >
+                <img
+                  alt="Facial Recognition"
+                  class="w-full h-full object-cover"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrBjxmho5m3211mqomofMkSKpYI2apVw4335zc0nc-HP3PXckupyHefkafJHBlIkBmDIx3mVwfL3HUUFBdz6y_G74ZY4-50XBt1aiPw61EktIswEjkdtaY93IpIEuPaOdX8WVyYZc3HbUpnA4i4fqfg2yd2rzKUhiK_Hh-sfMlaPuK_5UKK8PfJIs31ePedLJeYGqORKKlobZr0HTcAHlKmGOJxoQzypHTmh25M4Y0ze6kLLOd6VpBfT0p85cOmrkzWP5oKRp8bZzc"
+                />
+                <div
+                  class="absolute inset-0 bg-gradient-to-t from-primary/90 to-transparent flex flex-col justify-end p-8"
+                >
+                  <div class="flex gap-3 mb-4 flex-wrap">
+                    <span
+                      class="bg-error text-on-error px-3 py-1 text-xs font-bold rounded font-['Saira']"
+                      >DETECÇÃO ATIVA</span
+                    >
+                    <span
+                      class="bg-secondary text-on-secondary px-3 py-1 text-xs font-bold rounded font-['Saira']"
+                      >ZOOM 400%</span
+                    >
+                  </div>
+                  <p class="text-white text-sm font-['Saira']">
+                    Anomalias detectadas no contorno da mandíbula e reflexo
+                    pupilar inconsistente.
+                  </p>
+                </div>
+              </div>
+              <!-- floating callout -->
+              <div
+                class="absolute -right-6 -bottom-6 w-52 floating-card rounded-xl p-5 shadow-xl hidden md:block border border-secondary/40"
+              >
+                <span
+                  class="material-symbols-outlined text-secondary text-2xl mb-3 block"
+                  >visibility</span
+                >
+                <p
+                  class="text-on-surface-variant text-xs font-['Saira'] leading-relaxed"
+                >
+                  <strong class="text-on-surface">Piscar Inconsistente:</strong>
+                  Deepfakes costumam falhar na frequência natural do piscar de
+                  olhos.
+                </p>
+              </div>
+            </div>
+
+            <!-- sinais de identificação — dark icons -->
+            <div class="space-y-10">
+              <div class="group flex gap-6">
+                <div class="id-icon">
+                  <span class="material-symbols-outlined text-secondary"
+                    >face</span
+                  >
+                </div>
+                <div>
+                  <h4 class="text-xl font-headline font-bold mb-2">
+                    Bordas e Sombras
+                  </h4>
+                  <p
+                    class="text-on-surface-variant leading-relaxed font-['Saira']"
+                  >
+                    Procure por sombras que não acompanham o movimento do rosto
+                    ou borrões artificiais onde o cabelo encontra a testa.
+                  </p>
+                </div>
+              </div>
+              <div class="group flex gap-6">
+                <div class="id-icon">
+                  <span class="material-symbols-outlined text-secondary"
+                    >speech_to_text</span
+                  >
+                </div>
+                <div>
+                  <h4 class="text-xl font-headline font-bold mb-2">
+                    Sincronia Labial
+                  </h4>
+                  <p
+                    class="text-on-surface-variant leading-relaxed font-['Saira']"
+                  >
+                    Observe se os sons das consoantes explosivas (P, B, M)
+                    coincidem exatamente com o fechamento dos lábios.
+                  </p>
+                </div>
+              </div>
+              <div class="group flex gap-6">
+                <div class="id-icon">
+                  <span class="material-symbols-outlined text-secondary"
+                    >texture</span
+                  >
+                </div>
+                <div>
+                  <h4 class="text-xl font-headline font-bold mb-2">
+                    Inconsistência de Textura
+                  </h4>
+                  <p
+                    class="text-on-surface-variant leading-relaxed font-['Saira']"
+                  >
+                    A pele digital costuma ser excessivamente lisa ou
+                    "perfeita", perdendo poros, rugas naturais ou sardas reais.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════
+           ESCUDO DIGITAL — corrigido para floating-card
+      ══════════════════════ -->
+      <section class="py-24 bg-background relative overflow-hidden">
+        <div
+          class="absolute inset-0 hex-pattern opacity-5 pointer-events-none"
+        ></div>
+        <div class="max-w-7xl mx-auto px-8 relative z-10">
+          <div class="text-center mb-16">
+            <span
+              class="text-xs uppercase tracking-[0.2em] text-secondary font-semibold font-['Saira'] mb-3 block"
+              >Proteção Ativa</span
+            >
+            <h2 class="text-4xl font-headline font-bold mb-4">
+              Escudo Digital
+            </h2>
+            <p class="text-on-surface-variant font-['Saira'] max-w-xl mx-auto">
+              Dicas práticas para não cair em armadilhas de deepfakes.
+            </p>
+            <div class="w-20 h-1 bg-secondary rounded-full mx-auto mt-6"></div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <!-- dicas -->
+            <div class="space-y-4">
+              <div class="shield-card">
+                <h5
+                  class="text-secondary font-bold mb-2 flex items-center gap-2 font-['Space_Grotesk']"
+                >
+                  <span class="material-symbols-outlined text-xl"
+                    >verified_user</span
+                  >
+                  1. Verifique a Fonte
+                </h5>
+                <p
+                  class="text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Sempre busque o vídeo original em canais oficiais. Deepfakes
+                  circulam majoritariamente em aplicativos de mensagem sem
+                  contexto.
+                </p>
+              </div>
+              <div class="shield-card">
+                <h5
+                  class="text-secondary font-bold mb-2 flex items-center gap-2 font-['Space_Grotesk']"
+                >
+                  <span class="material-symbols-outlined text-xl"
+                    >emergency_home</span
+                  >
+                  2. Palavra-Passe Familiar
+                </h5>
+                <p
+                  class="text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Combine uma palavra de segurança secreta com sua família para
+                  validar emergências recebidas por áudio ou vídeo.
+                </p>
+              </div>
+              <div class="shield-card">
+                <h5
+                  class="text-secondary font-bold mb-2 flex items-center gap-2 font-['Space_Grotesk']"
+                >
+                  <span class="material-symbols-outlined text-xl">rule</span>
+                  3. A Regra do Movimento
+                </h5>
+                <p
+                  class="text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  A maioria das IAs falha em vídeos longos. Peça para a pessoa
+                  fazer um movimento lateral brusco com a cabeça durante uma
+                  chamada.
+                </p>
+              </div>
+              <div class="shield-card">
+                <h5
+                  class="text-secondary font-bold mb-2 flex items-center gap-2 font-['Space_Grotesk']"
+                >
+                  <span class="material-symbols-outlined text-xl"
+                    >manage_search</span
+                  >
+                  4. Use Ferramentas de Detecção
+                </h5>
+                <p
+                  class="text-on-surface-variant font-['Saira'] leading-relaxed"
+                >
+                  Plataformas como Deepware Scanner e Microsoft Video
+                  Authenticator analisam vídeos suspeitos e apontam
+                  probabilidade de manipulação.
+                </p>
+              </div>
+            </div>
+
+            <!-- stat visual — corrigido -->
+            <div class="flex flex-col items-center gap-8">
+              <!-- anel SVG -->
+              <div class="stat-ring">
+                <svg width="220" height="220" viewBox="0 0 220 220">
+                  <circle
+                    class="ring-bg"
+                    cx="110"
+                    cy="110"
+                    r="90"
+                    fill="none"
+                    stroke-width="14"
+                  />
+                  <circle
+                    class="ring-fill"
+                    cx="110"
+                    cy="110"
+                    r="90"
+                    fill="none"
+                    stroke-width="14"
+                  />
+                </svg>
+                <div class="ring-center">
+                  <span
+                    class="text-6xl font-headline font-bold text-secondary leading-none"
+                    >98%</span
+                  >
+                  <p
+                    class="text-xs uppercase tracking-widest font-bold text-on-surface mt-2 font-['Space_Grotesk']"
+                  >
+                    Nível de Alerta
+                  </p>
+                  <p
+                    class="text-on-surface-variant text-xs mt-3 px-10 text-center font-['Saira'] leading-relaxed"
+                  >
+                    Probabilidade de manipulação em conteúdos virais de fontes
+                    não verificadas.
+                  </p>
+                </div>
+              </div>
+
+              <!-- mini stats abaixo do anel -->
+              <div class="w-full grid grid-cols-1 gap-3 max-w-sm">
+                <div class="stat-mini">
+                  <span
+                    class="material-symbols-outlined text-secondary flex-shrink-0"
+                    >trending_up</span
+                  >
+                  <div>
+                    <div
+                      class="font-headline font-bold text-on-surface text-sm"
+                    >
+                      +900% em 2 anos
+                    </div>
+                    <div class="text-xs text-on-surface-variant font-['Saira']">
+                      Crescimento de deepfakes na internet
+                    </div>
+                  </div>
+                </div>
+                <div class="stat-mini">
+                  <span
+                    class="material-symbols-outlined text-secondary flex-shrink-0"
+                    >timer</span
+                  >
+                  <div>
+                    <div
+                      class="font-headline font-bold text-on-surface text-sm"
+                    >
+                      Menos de 5 min
+                    </div>
+                    <div class="text-xs text-on-surface-variant font-['Saira']">
+                      Para gerar um clone de voz convincente
+                    </div>
+                  </div>
+                </div>
+                <div class="stat-mini">
+                  <span
+                    class="material-symbols-outlined text-error flex-shrink-0"
+                    >groups</span
+                  >
+                  <div>
+                    <div
+                      class="font-headline font-bold text-on-surface text-sm"
+                    >
+                      96% das pessoas
+                    </div>
+                    <div class="text-xs text-on-surface-variant font-['Saira']">
+                      Não distinguem deepfakes sem treinamento
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════
+           CTA
+      ══════════════════════ -->
+      <section class="py-24 max-w-7xl mx-auto px-8">
+        <div
+          class="floating-card rounded-2xl p-12 text-center relative overflow-hidden"
+        >
+          <div
+            class="absolute inset-0 opacity-5 pointer-events-none"
+            style="
+              background-image:
+                linear-gradient(rgba(0, 170, 255, 0.5) 1px, transparent 1px),
+                linear-gradient(
+                  90deg,
+                  rgba(0, 170, 255, 0.5) 1px,
+                  transparent 1px
+                );
+              background-size: 40px 40px;
+            "
+          ></div>
+          <div class="relative z-10">
+            <h3 class="text-3xl md:text-5xl font-headline font-bold mb-6">
+              Pronto para ver outras ameaças?
+            </h3>
+            <p
+              class="text-on-surface-variant mb-10 max-w-2xl mx-auto font-['Saira'] text-lg"
+            >
+              Clique no botão abaixo para conhecer outras ameaças que o ambiente
+              digital pode apresentar
+            </p>
+            <div class="flex flex-wrap gap-4 justify-center">
+              <a
+                href="./ameacas.html"
+                class="border border-secondary/40 text-secondary px-10 py-5 rounded-md font-headline font-bold text-xl hover:bg-secondary/10 transition-all inline-flex items-center gap-2"
+              >
+                <span class="material-symbols-outlined">shield</span>
+                Ver ameaças
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ── Footer ── -->
+    <footer
+      class="dark:bg-slate-900 w-full py-12 border-t border-slate-200/50 dark:border-slate-800/50 mt-auto"
+    >
+      <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="fade-in duration-500">
+          <div class="text-lg font-bold footer-logo font-['Saira'] mb-4">
+            Vigie.Ai
+          </div>
+          <p
+            class="text-sm leading-relaxed text-slate-500 max-w-sm font-['Saira']"
+          >
+            Plataforma dedicada à educação cibernética e proteção de dados para
+            cidadãos digitais.
+          </p>
+          <p class="text-sm text-slate-500 font-['Saira'] mt-2">
+            © 2026 Vigie.Ai. Protegendo o futuro digital.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-8">
+          <div class="flex flex-col gap-3">
+            <span
+              class="font-bold text-secondary mb-2 font-['Saira'] text-sm uppercase tracking-wider"
+              >Educação</span
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="../index.html"
+              >Home</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./ameacas.html"
+              >Ameaças</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./deepfakes.html"
+              >Deepfakes</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./guia.html"
+              >Guia de Proteção</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./ferramentas.html"
+              >Ferramentas</a
+            >
+          </div>
+          <div class="flex flex-col gap-3">
+            <span
+              class="font-bold text-secondary mb-2 font-['Saira'] text-sm uppercase tracking-wider"
+              >Institucional</span
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Sobre Nós</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Privacidade</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Termos</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Contato</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

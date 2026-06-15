@@ -1,0 +1,491 @@
+<!doctype html>
+
+<html class="light" lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Vigie.AI</title>
+
+    <!-- TAILWIND -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./src/css/style.css" />
+
+    <!-- ICON -->
+    <link rel="icon" href="./src/images/logo-white.svg" />
+
+    <!-- FONTS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=Saira:wght@300;400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-background": "#191c1e",
+              "secondary-fixed": "#9cf0ff",
+              primary: "#000000",
+              "surface-container-highest": "#e0e3e5",
+              "on-primary-container": "#79849d",
+              "tertiary-fixed": "#d1e4ff",
+              "primary-container": "#101b30",
+              "surface-dim": "#d8dadc",
+              "secondary-fixed-dim": "#00daf3",
+              secondary: "#0af",
+              "on-secondary": "#ffffff",
+              "on-primary": "#ffffff",
+              "tertiary-fixed-dim": "#afc9ea",
+              "error-container": "#ffdad6",
+              "surface-tint": "#545e76",
+              "secondary-container": "#00e3fd",
+              "on-secondary-container": "#00616d",
+              "on-primary-fixed-variant": "#3c475d",
+              "on-surface-variant": "#ccb",
+              "tertiary-container": "#001d36",
+              "primary-fixed-dim": "#bbc6e2",
+              "on-surface": "#eee",
+              "on-tertiary": "#ffffff",
+              "on-primary-fixed": "#101b30",
+              "surface-variant": "#e0e3e5",
+              "surface-container-high": "#e6e8ea",
+              "inverse-primary": "#bbc6e2",
+              "on-error-container": "#93000a",
+              background: "#012",
+              "surface-container": "#eceef0",
+              "on-tertiary-container": "#6d86a5",
+              "surface-container-low": "#f2f4f6",
+              "surface-container-lowest": "#ffffff",
+              error: "#ba1a1a",
+              "on-error": "#ffffff",
+              "on-tertiary-fixed-variant": "#2f4865",
+              "inverse-on-surface": "#eff1f3",
+              "surface-bright": "#f7f9fb",
+              "on-secondary-fixed-variant": "#004f58",
+              "on-secondary-fixed": "#001f24",
+              tertiary: "#000000",
+              outline: "#74777d",
+              surface: "#f7f9fb",
+              "primary-fixed": "#d7e2ff",
+              "outline-variant": "#c4c6cc",
+              "on-tertiary-fixed": "#001d36",
+              "inverse-surface": "#2d3133",
+            },
+            fontFamily: {
+              headline: ["Space Grotesk"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .glass-effect {
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+      .hex-pattern {
+        mask-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill-rule='evenodd'/%3E%3C/svg%3E");
+        mask-size: 80px;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container"
+  >
+    <!-- TopNavBar -->
+    <nav
+      class="fixed top-0 w-full dark:bg-slate-950/70 backdrop-blur-xl shadow-sm dark:shadow-non nav-bar"
+    >
+      <div
+        class="max-w-7xl mx-auto px-8 flex justify-between items-center h-20 nav"
+      >
+        <div
+          class="text-2xl font-bold tracking-tighter text-slate-900 dark:text-slate-100 font-['Space_Grotesk'] logo-container"
+        >
+          <a href="./index.html">
+            <img src="./src/images/logo-white.svg" alt="logo" class="logo" />
+          </a>
+        </div>
+        <div class="hidden md:flex items-center gap-10 nav-links">
+          <a
+            class="text-slate-400 dark:text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./index.html"
+            >Home</a
+          >
+          <a
+            class="text-slate-400 dark:text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./info/ameacas.html"
+            >Ameaças</a
+          >
+          <a
+            class="text-slate-400 dark:text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./info/deepfakes.html"
+            >Deepfakes</a
+          >
+          <a
+            class="text-slate-400 dark:text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            href="./info/guia.html"
+            >Guia de Proteção</a
+          >
+          <a
+            href="./info/ferramentas.html"
+            class="text-slate-400 dark:text-slate-400 hover:text-cyan-500 transition-colors font-['Space_Grotesk'] font-bold tracking-tight"
+            >Ferramentas</a
+          >
+        </div>
+      </div>
+      <div class="bg-slate-200/20 dark:bg-slate-800/20 h-[1px]"></div>
+    </nav>
+    <main class="pt-20">
+      <!-- Hero Section -->
+      <section
+        class="relative min-h-[80vh] flex items-center overflow-hidden hero-content"
+      >
+        <!-- Background Decoration -->
+        <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <!-- Gradient -->
+          <div
+            class="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-secondary-container/10 rounded-full blur-[120px]"
+          ></div>
+          <div
+            class="absolute bottom-[-5%] left-[-5%] w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px]"
+          ></div>
+          <div
+            class="absolute right-10 top-1/4 opacity-10 hex-pattern w-96 h-96 bg-secondary-fixed-dim"
+          ></div>
+        </div>
+        <div
+          class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-12 relative z-10"
+        >
+          <div class="lg:col-span-7 flex flex-col justify-center text-left">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/20 text-secondary font-label text-xs font-bold tracking-widest uppercase mb-6 w-fit"
+            >
+              <span
+                class="material-symbols-outlined text-sm"
+                style="font-variation-settings: &quot;FILL&quot; 1"
+                >verified_user</span
+              >
+              Iniciativa Vigie.AI
+            </div>
+            <h1
+              class="font-headline text-6xl md:text-7xl lg:text-7xl font-bold text-on-surface tracking-tight leading-[0.9] mb-8"
+            >
+              O Futuro Digital é <span class="text-secondary">Seguro</span> com
+              Você.
+            </h1>
+            <p
+              class="body-lg text-on-surface-variant max-w-xl mb-10 text-lg leading-relaxed font-['Saira'] text-justify"
+            >
+              Nossa missão é transformar a complexidade da cibersegurança em
+              conhecimento acessível. Através da educação, construímos a
+              primeira e mais importante linha de defesa: o fator humano.
+            </p>
+            <div class="flex flex-wrap gap-4">
+              <a
+                href="#home-cta"
+                class="bg-gradient-to-r from-secondary to-on-secondary-fixed-variant text-on-secondary px-10 py-4 rounded-md font-headline font-bold text-lg hover:opacity-90 transition-all duration-300 shadow-xl shadow-secondary/20 flex items-center gap-2 cta-btn"
+              >
+                Comece por Aqui
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+          <div
+            class="lg:col-span-5 flex items-center justify-center relative mb-16"
+          >
+            <div class="relative w-full aspect-square max-w-md">
+              <div
+                class="absolute inset-0 bg-surface-container-highest rounded-xl overflow-hidden shadow-2xl"
+              >
+                <img
+                  alt="Interface tecnológica de segurança cibernética"
+                  class="w-full h-full object-cover"
+                  data-alt="Modern holographic user interface with glowing blue data streams and digital security locks in a dark professional setting"
+                  src="./src/images/hero-image.png"
+                />
+              </div>
+              <!-- Asymmetric Floating Element -->
+              <div
+                class="absolute -bottom-6 -left-6 floating-card p-6 rounded-lg shadow-2xl border-l-4 border-secondary-container max-w-[240px] font-['Saira']"
+              >
+                <div class="flex items-center gap-2 text-secondary mb-2">
+                  <span
+                    class="material-symbols-outlined"
+                    style="font-variation-settings: &quot;FILL&quot; 1"
+                    >shield_with_heart</span
+                  >
+                  <span class="font-label font-bold text-xs tracking-widest"
+                    >CURIOSIDADE</span
+                  >
+                </div>
+                <p class="text-sm font-medium text-on-surface leading-tight">
+                  98.4% das ameaças são evitadas com educação básica.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Manifesto Section -->
+      <section class="py-32" id="home-cta">
+        <div class="max-w-7xl mx-auto px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            <div class="lg:col-span-5">
+              <h2
+                class="font-headline text-4xl font-bold tracking-tight text-on-surface mb-8"
+              >
+                Por que a Conscientização é a nossa
+                <span class="italic font-light">Melhor Defesa</span>?
+              </h2>
+              <div
+                class="space-y-6 text-on-surface-variant leading-relaxed font-['Saira'] text-justify"
+              >
+                <p>
+                  Em um mundo onde os algoritmos e a inteligência artificial
+                  moldam nossa realidade, a vulnerabilidade não está apenas no
+                  código, mas na nossa percepção.
+                </p>
+                <p>
+                  O manifesto CyberSafe acredita que a tecnologia deve ser um
+                  escudo, não uma espada. Ao educar o usuário, removemos as
+                  sombras onde o cibercrime prospera.
+                </p>
+              </div>
+            </div>
+            <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Manifesto Card 1 -->
+              <div
+                class="floating-card p-8 rounded-xl border-t-2 border-secondary-container shadow-sm hover:shadow-md transition-shadow font-['Saira'] text-center"
+              >
+                <span
+                  class="material-symbols-outlined text-secondary text-4xl mb-6"
+                  >psychology</span
+                >
+                <h3 class="font-headline text-xl font-bold mb-4">
+                  Educação Simplificada
+                </h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                  Não ensinamos apenas regras; desenvolvemos o instinto digital
+                  necessário para identificar anomalias em tempo real.
+                </p>
+              </div>
+              <!-- Manifesto Card 2 -->
+              <div
+                class="floating-card p-8 rounded-xl border-t-2 border-secondary-container shadow-sm hover:shadow-md transition-shadow font-['Saira'] text-center"
+              >
+                <span
+                  class="material-symbols-outlined text-secondary text-4xl mb-6"
+                  >encrypted</span
+                >
+                <h3 class="font-headline text-xl font-bold mb-4">
+                  Soberania de Dados
+                </h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                  Sua privacidade é um direito, não um privilégio. Conheça as
+                  ferramentas para você retomar o controle total.
+                </p>
+              </div>
+              <!-- Manifesto Card 3 -->
+              <div
+                class="floating-card p-8 rounded-xl border-t-2 border-secondary-container shadow-sm hover:shadow-md transition-shadow font-['Saira'] text-center"
+              >
+                <span
+                  class="material-symbols-outlined text-secondary text-4xl mb-6"
+                  >group_work</span
+                >
+                <h3 class="font-headline text-xl font-bold mb-4">
+                  Ação Coletiva
+                </h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                  Uma comunidade informada é imune. Compartilhamos conteúdo
+                  sobre inteligência de ameaças para proteger o ecossistema como
+                  um todo.
+                </p>
+              </div>
+              <!-- Manifesto Card 4 -->
+              <div
+                class="floating-card p-8 rounded-xl border-t-2 border-secondary-container shadow-sm hover:shadow-md transition-shadow font-['Saira'] text-center"
+              >
+                <span
+                  class="material-symbols-outlined text-secondary text-4xl mb-6"
+                  >auto_awesome</span
+                >
+                <h3 class="font-headline text-xl font-bold mb-4">
+                  Futuro Ético
+                </h3>
+                <p class="text-on-surface-variant text-sm leading-relaxed">
+                  Incentivamos o uso de tecnologias emergentes, como IA , de
+                  maneira segura e eticamente responsável.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Threat Level Gauge (Design System Signature) -->
+      <section class="py-24 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-8 relative z-10">
+          <div
+            class="bg-primary-container text-on-primary-fixed p-12 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-12"
+          >
+            <div class="max-w-lg">
+              <span
+                class="text-secondary-fixed-dim font-label text-xs tracking-widest font-bold mb-2 block uppercase"
+                >CURIOSIDADE</span
+              >
+              <h2 class="font-headline text-3xl font-bold text-white mb-4">
+                VIOLAÇÕES DE SISTEMAS
+              </h2>
+              <p class="text-on-primary-container">
+                Sistemas internos de empresas geralmente são violados com a
+                colaboração ou falta de conhecimento de um elemento humano, ou
+                seja, uma pessoa.
+              </p>
+            </div>
+            <div class="relative w-48 h-48 flex items-center justify-center">
+              <svg class="w-full h-full transform -rotate-90">
+                <circle
+                  class="text-slate-800"
+                  cx="96"
+                  cy="96"
+                  fill="transparent"
+                  r="88"
+                  stroke="currentColor"
+                  stroke-width="8"
+                ></circle>
+                <circle
+                  class="text-secondary-fixed-dim"
+                  cx="96"
+                  cy="96"
+                  fill="transparent"
+                  r="88"
+                  stroke="currentColor"
+                  stroke-dasharray="552.92"
+                  stroke-dashoffset="187"
+                  stroke-width="12"
+                ></circle>
+              </svg>
+              <div class="absolute flex flex-col items-center">
+                <span class="text-4xl font-headline font-bold text-white"
+                  >68%</span
+                >
+                <span
+                  class="text-[10px] uppercase tracking-tighter text-secondary-fixed-dim"
+                  >Nível de Alerta</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <!-- Footer predicted component implementation -->
+    <footer
+      class="dark:bg-slate-900 w-full py-12 border-t border-slate-200/50 dark:border-slate-800/50 mt-auto"
+    >
+      <div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="fade-in duration-500">
+          <div class="text-lg font-bold footer-logo font-['Saira'] mb-4">
+            Vigie.Ai
+          </div>
+          <p
+            class="text-sm leading-relaxed text-slate-500 max-w-sm font-['Saira']"
+          >
+            Plataforma dedicada à educação cibernética e proteção de dados para
+            cidadãos digitais.
+          </p>
+          <p class="text-sm text-slate-500 font-['Saira'] mt-2">
+            © 2026 Vigie.Ai. Protegendo o futuro digital.
+          </p>
+        </div>
+        <div class="grid grid-cols-2 gap-8">
+          <div class="flex flex-col gap-3">
+            <span
+              class="font-bold text-secondary mb-2 font-['Saira'] text-sm uppercase tracking-wider"
+              >Educação</span
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./index.html"
+              >Home</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./info/ameacas.html"
+              >Ameaças</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./info/deepfakes.html"
+              >Deepfakes</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./info/guia.html"
+              >Guia de Proteção</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="./info/ferramentas.html"
+              >Ferramentas</a
+            >
+          </div>
+          <div class="flex flex-col gap-3">
+            <span
+              class="font-bold text-secondary mb-2 font-['Saira'] text-sm uppercase tracking-wider"
+              >Institucional</span
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Sobre Nós</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Privacidade</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Termos</a
+            >
+            <a
+              class="font-['Saira'] text-sm text-slate-500 hover:text-cyan-500 hover:underline decoration-cyan-500 underline-offset-4"
+              href="#"
+              >Contato</a
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
